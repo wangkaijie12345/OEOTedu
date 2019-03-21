@@ -7,6 +7,8 @@
 <body>
 <h1>欢迎光临视察</h1>
 <h3>公告：</h3>
+<p><a href="{% url 'post_delete' post.id %}"></a>删除</p>
+
 {#{% for post in posts %}#}
 {#    {{ post.title }} <br>#}
 {#    <a href="{% url 'post_delete' post.id %}">删除</a>#}

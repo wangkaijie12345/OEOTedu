@@ -9,10 +9,6 @@ def index(request):
     return render(request, 'training/index.html', {'posts': posts})
 
 
-def company(request):
-    company = Company.objects.all()
-    return render(request, 'training/company.html', {'company': company})
-
 
 # 删除——艾鹏
 def post_delete(request, id):
