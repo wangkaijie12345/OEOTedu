@@ -5,7 +5,21 @@
     <title>培训公司管理系统</title>
 </head>
 <body>
-欢迎光临视察
+<h1>欢迎光临视察</h1>
+<h3>公告：</h3>
+{#{% for post in posts %}#}
+{#    {{ post.title }} <br>#}
+{#    <a href="{% url 'post_delete' post.id %}">删除</a>#}
+{#{% endfor %}#}
+
+{# {% for post in posts %}#}
+{#     <a href="#">{{ post.title }}</a>#}
+{#     {{ post.publish}}#}
+{#     <p>删除:#}
+{#         <a href="{% url 'post_delete' post.id %}">SIX删除</a>#}
+{#     </p>#}
+{# {% endfor %}#}
+123321321
 
 <br>
 </body>

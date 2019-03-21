@@ -10,6 +10,9 @@ email：40063539@qq.com
 from django.db import models
 from django.conf import settings
 
+# 导入timezone——艾鹏
+from django.utils import timezone
+
 
 # Create your models here.
 # 公司表
@@ -46,7 +49,6 @@ class Position(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 # 个人信息
@@ -116,6 +118,9 @@ class Note(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
+
+    # 更新了文章时间_艾鹏
+    publish = models.DateTimeField(default=timezone.now())
     auth = models.ForeignKey(Profile, on_delete=models.CASCADE,
                              related_name='posts')
 
