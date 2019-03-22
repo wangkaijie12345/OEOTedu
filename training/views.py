@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Profile, Post, Company,Department
+from .models import Profile, Post, Company, Department
 from .forms import PostForm
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -42,6 +42,7 @@ def post_add(request):
     else:
         return HttpResponseRedirect("不能进行增加！！！")
 
+
 #
 def post_update(request, id):
     user = request.user
@@ -73,7 +74,6 @@ def post_delete(request, id):
         return HttpResponse('当前登录用户没有权限，请切换用户或者联系管理员.')
 
 
-
 # 班级人员列表——艾鹏
 def profile_list(request, id):
     department = Department.objects.get(id=id)
@@ -81,18 +81,16 @@ def profile_list(request, id):
     return render(request, 'training/department_detail.html', {'department': department, 'profiles': profiles})
 
 
-#班级测试，艾鹏
-# def ceshi(request):
-#     department = Department.objects.filter(name__contains='班')
-#     return render(request, 'training/ceshi.html', {'department': department})
+# 班级测试，艾鹏
+def ceshi(request):
+    department = Department.objects.filter(name__contains='班')
+    return render(request, 'training/ceshi.html', {'department': department})
+
 
 # 查看部门__斌
 def section_list(request):
     look = Department.objects.filter(name__contains="部")
     return render(request, 'training/look_section.html', {'look': look})
-
-
-
 
 
 # 部门下的人员__斌

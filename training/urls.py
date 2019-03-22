@@ -12,7 +12,7 @@ urlpatterns = [
     # 人员表——艾鹏
     path('department/<int:id>/', views.profile_list, name='department_detail'),
     path('company/', views.company, name='company'),
-    # path('aa/',views.ceshi,name='ceshi'),
+    path('aa/',views.ceshi,name='ceshi'),
     ##部门以及部门详情 ————薛斌
     path('post/section_list/', views.section_list, name='section_list'),
     path('post/section_details/<int:id>/',views.section_details,name='section_details'),
