@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>修改</title>
+    <title>Title</title>
 </head>
 <body>
 <form action="." method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <p><input type="submit" value="修改"></p>
+    {{ course_form.as_p }}
+    <p><input type="submit" value="确认修改"></p>
 </form>
 </body>
 </html>
