@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Profile, Post, Company, Department
-from .forms import PostForm
 from .models import Course, Note
 from .forms import CourseForm, PostForm
-from datetime import datetime
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from datetime import date
+from .models import Profile, Post, Company, Department, Note
+from .forms import PostForm, NoteForm
 from django.http import HttpResponseRedirect, HttpResponse
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 
 # Create your views here.
@@ -141,6 +142,7 @@ def post_delete(request, id):
         return HttpResponse('当前登录用户没有权限，请切换用户或者联系管理员.')
 
 
+
 # 班级人员列表——艾鹏
 def profile_list(request, id):
     department = Department.objects.get(id=id)
@@ -153,6 +155,9 @@ def profile_list(request, id):
 def section_list(request):
     look = Department.objects.filter(name__contains="部")
     return render(request, 'training/department/look_section.html', {'look': look})
+
+
+
 
 
 # 部门下的人员__斌
@@ -191,6 +196,19 @@ def duty_list(request):
     return render(request, 'training/duty_list.html', {'duties': duties})
 
 
+# 值日表--小罗-小王
+def stu_note(request):
+    # 找到今天是星期几
+    today = date.today().weekday() + 1
+    # 找到today这整个星期的星期1
+    week_s = date.today() - timedelta(days=today - 1)
+    # 找到today这个星期的周末
+    week_end = date.today() + timedelta(7 - today)
+    # 找到日期大于等于这个星期的日期在找到结束日期小于这周最周一天的
+    stu_note = Note.objects.filter(starttime__gte=week_s).filter(endtime__lte=week_end)
+    return render(request, 'training/stu_note.html', {'stu_note': stu_note})
+
+
 # 判断职务,分别进入页面__赵猛彤
 def course_list(request):
     all_courses = Course.objects.all()
@@ -203,7 +221,62 @@ def course_list(request):
     return render(request, 'training/courses_list.html', {'courses': courses, 'all_courses': all_courses})
 
 
+def course_detail(request, id):
+    course = Course.objects.get(id=id)
+    courses = Course.objects.all()
+    return render(request, 'training/course_detail.html', {'course': course, 'courses': courses})
+
+
 def course_delete_stu(request, id):
     course = Course.objects.get(id=id)
     course.students.remove(request.user.profile)
     return redirect('courses_list')
+
+
+# 报名课程
+def course_apply(request, id):
+    courses = Course.objects.all().filter(students__name=request.user.profile.name)
+    course = Course.objects.get(id=id)
+    if request.method == 'POST':
+        for course1 in courses:
+            # 拿到课程的开始时间和结束时间
+            time_start = course.starttime
+            time_end = course.endtime
+            # 得到修改后的课程的开始时间和结束时间
+            start = course1.starttime
+            end = course1.endtime
+            # 符合课程时间的条件为：开始时间大于结束时间，结束时间小于开始时间
+            if start >= time_end or end <= time_start:
+                course.students.add(request.user.profile)
+                return redirect("courses_list")
+            else:
+                return render(request, 'training/course_failed.html')
+
+
+def user_like(request):
+    stu_id = request.POST.get('stu_id')
+    cour_id = request.POST.get('cour_id')
+    action = request.POST.get('action')
+
+    if stu_id and cour_id and action:
+        try:
+            student = Profile.objects.get(id=stu_id)
+            course = Course.objects.get(id=cour_id)
+            if action == 'like':
+                course.students.add(student)
+            else:
+                course.students.remove(student)
+            return JsonResponse({'status': 'ok'})
+        except:
+            pass
+    return JsonResponse({'status': 'ko'})
+#最新课程（可报名）--王凯杰
+def new_course(request):
+    new_courses=Course.objects.all().order_by('starttime')
+    course_list=[]
+    for course in new_courses:
+        c=course.students.count()
+        if c<course.most:
+            course_list.append(course)
+
+    return render(request,'training/new_courses.html',{'course_list':course_list})
