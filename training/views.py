@@ -277,13 +277,15 @@ def user_like(request):
         except:
             pass
     return JsonResponse({'status': 'ko'})
-#最新课程（可报名）--王凯杰
+
+
+# 最新课程（可报名）--王凯杰
 def new_course(request):
-    new_courses=Course.objects.all().order_by('starttime')
-    course_list=[]
+    new_courses = Course.objects.all().order_by('starttime')
+    course_list = []
     for course in new_courses:
-        c=course.students.count()
-        if c<course.most:
+        c = course.students.count()
+        if c < course.most:
             course_list.append(course)
 
-    return render(request,'training/new_courses.html',{'course_list':course_list})
+    return render(request, 'training/new_courses.html', {'course_list': course_list})
