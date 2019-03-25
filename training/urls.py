@@ -24,7 +24,7 @@ urlpatterns = [
     path('post/section_list/', views.section_list, name='section_list'),
     path('post/section_details/<int:id>/', views.section_details, name='section_details'),
     path('company/', views.company, name='company'),
-    #     # 班级详细介绍----王帅
+     # 班级详细介绍----王帅
     path('class_list/', views.class_list, name='class_list'),  # 班级列表
     path('class_detail/<int:class_id>/', views.class_detail, name='class_detail'),  # 班级详情
     path('duty_list/', views.duty_list, name='duty_list'),
