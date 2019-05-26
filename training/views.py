@@ -120,7 +120,7 @@ def post_add(request):
             post_add = PostForm()  # 否则实例化对象
             return render(request, 'training/post/post_add.html', {'post_add': post_add})
     else:
-        return HttpResponseRedirect("不能进行增加！！！")
+        return HttpResponse("对不起你没有权限，请联系管理员")
 
 
 #
@@ -140,7 +140,7 @@ def post_update(request, id):
             form = PostForm(instance=post)  # 否则实例化对象
             return render(request, 'training/post/post_update.html', {'form': form})
     else:
-        return HttpResponseRedirect("非职工身份不能修改公告！")
+        return HttpResponse("非职工身份不能修改公告！")
 
 
 # 删除——艾鹏
